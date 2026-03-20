@@ -1,7 +1,9 @@
-# Database
-*.db
+# Database (backend local copy)
+backend/*.db
 *.db-wal
 *.db-shm
+# Keep data/etf_brasil.db for Vercel deployment
+!data/*.db
 
 # Python
 __pycache__/
