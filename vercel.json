@@ -1,11 +1,1 @@
-{
-  "rewrites": [
-    { "source": "/api/etf/:ticker", "destination": "/api/etf/[ticker]" }
-  ],
-  "functions": {
-    "api/**/*.py": {
-      "runtime": "@vercel/python@4.3.1",
-      "includeFiles": "data/**"
-    }
-  }
-}
+{}
