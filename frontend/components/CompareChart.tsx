@@ -37,7 +37,7 @@ const BENCHMARKS = ["IBOV", "S&P 500", "CDI"];
 export default function CompareChart({ tickers, onRemove }: Props) {
   const [period, setPeriod] = useState("1a");
   const [benchmark, setBenchmark] = useState<string>("");
-  const [data, setData] = useState<{ data: string; [key: string]: number | string }[]>([]);
+  const [data, setData] = useState<Record<string, number | string>[]>([]);
   const [series, setSeries] = useState<CompareSeries>({});
   const [loading, setLoading] = useState(false);
 
@@ -172,7 +172,7 @@ export default function CompareChart({ tickers, onRemove }: Props) {
             <Tooltip
               contentStyle={{ backgroundColor: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: "8px" }}
               labelStyle={{ color: "#999" }}
-              formatter={(value: number, name: string) => [`${value.toFixed(2)}%`, name]}
+              formatter={(value, name) => [`${Number(value).toFixed(2)}%`, name]}
               labelFormatter={(label) => {
                 const d = new Date(label + "T00:00:00");
                 return d.toLocaleDateString("pt-BR");
@@ -180,7 +180,7 @@ export default function CompareChart({ tickers, onRemove }: Props) {
             />
             <Legend />
             <ReferenceLine y={0} stroke="#555" strokeDasharray="3 3" />
-            {allKeys.map((key, i) => (
+            {allKeys.map((key) => (
               <Line
                 key={key}
                 type="monotone"
