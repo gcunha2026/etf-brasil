@@ -146,7 +146,7 @@ export default function ETFDetail({ ticker, onClose }: Props) {
               <Tooltip
                 contentStyle={{ backgroundColor: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: "8px" }}
                 labelFormatter={(label) => new Date(label + "T00:00:00").toLocaleDateString("pt-BR")}
-                formatter={(value: number) => [`R$ ${value.toFixed(2)}`, "Preco"]}
+                formatter={(value) => [`R$ ${Number(value).toFixed(2)}`, "Preco"]}
               />
               <Area
                 type="monotone"
