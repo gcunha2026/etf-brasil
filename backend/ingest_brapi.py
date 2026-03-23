@@ -490,8 +490,8 @@ def ingest_benchmarks():
             parts = date_str.split("/")
             iso_date = f"{parts[2]}-{parts[1]}-{parts[0]}"
             rate = float(item["valor"].replace(",", "."))
-            daily_factor = (1 + rate / 100) ** (1 / 252)
-            base *= daily_factor
+            # BCB series 11 is already the daily rate in %, so just compound directly
+            base *= (1 + rate / 100)
 
             conn.execute("""
                 INSERT OR REPLACE INTO benchmark_series (nome, data, valor)
