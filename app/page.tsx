@@ -46,11 +46,11 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0c] pixel-pattern">
+    <div className="min-h-screen bg-[--bg-base] pixel-pattern">
       {/* Ticker tape bar */}
-      <div className="bg-[#3d52ef] overflow-hidden whitespace-nowrap">
-        <div className="ticker-tape inline-block py-1">
-          <span className="text-[10px] font-mono text-white/60 tracking-widest">
+      <div className="bg-[#1c1e30] border-b border-[--border-muted] overflow-hidden whitespace-nowrap">
+        <div className="ticker-tape inline-block py-1.5">
+          <span className="text-[10px] font-mono text-[#6982ff]/70 tracking-widest">
             {TAPE_TEXT.repeat(12)}
           </span>
         </div>
@@ -58,12 +58,10 @@ export default function Home() {
 
       {/* Header */}
       <header className="relative overflow-hidden">
-        {/* Blue gradient bg */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#3d52ef] via-[#294199] to-[#0a0a0c] opacity-20" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#3d52ef]/8 via-transparent to-transparent" />
         <div className="relative max-w-[1400px] mx-auto px-4 py-6">
           <div className="flex items-end justify-between">
             <div>
-              {/* Logo area */}
               <div className="flex items-center gap-4 mb-2">
                 {/* Pixel block logo mark */}
                 <div className="w-10 h-10 relative">
@@ -73,19 +71,19 @@ export default function Home() {
                   <div className="absolute top-5 left-5 w-3 h-3 bg-[#6982ff] rounded-[2px]" />
                 </div>
                 <div>
-                  <h1 className="text-2xl font-bold tracking-tight text-white">
+                  <h1 className="text-2xl font-bold tracking-tight text-[#f3f3f3]">
                     <span className="text-[#3d52ef]">Fin</span>trender
                   </h1>
                 </div>
               </div>
-              <p className="text-[11px] font-mono text-[#515151] ml-14">
-                turning <span className="text-[#3d52ef]">ETF</span> intelligence <span className="font-bold text-white">UP</span>
+              <p className="text-[11px] font-mono text-[#6982ff]/50 ml-14">
+                turning <span className="text-[#6982ff]">ETF</span> intelligence <span className="font-bold text-[#c6c6c6]">UP</span>
               </p>
             </div>
 
             {/* Nav tabs */}
             <div className="flex items-center gap-6">
-              <nav className="flex gap-1 bg-[#111114] rounded-lg p-1 border border-[#1a1a1e]">
+              <nav className="flex gap-1 bg-[--bg-surface] rounded-lg p-1 border border-[--border-subtle]">
                 {([
                   { key: "lista", label: "Lista" },
                   { key: "comparador", label: "Comparador" },
@@ -96,7 +94,7 @@ export default function Home() {
                     className={`px-5 py-2 rounded-md text-xs font-mono font-bold uppercase tracking-wider transition-all ${
                       activeTab === tab.key
                         ? "bg-[#3d52ef] text-white shadow-lg shadow-[#3d52ef]/20"
-                        : "text-[#515151] hover:text-white"
+                        : "text-[#6982ff]/50 hover:text-[#f3f3f3]"
                     }`}
                   >
                     {tab.label}
@@ -110,36 +108,35 @@ export default function Home() {
               </nav>
 
               <div className="text-right">
-                <div className="text-xl font-bold font-mono text-white">{etfs.length}</div>
-                <div className="text-[9px] text-[#515151] uppercase tracking-widest">ETFs</div>
+                <div className="text-xl font-bold font-mono text-[#f3f3f3]">{etfs.length}</div>
+                <div className="text-[9px] text-[#6982ff]/40 uppercase tracking-widest">ETFs</div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Decorative bottom line */}
-        <div className="h-[2px] bg-gradient-to-r from-transparent via-[#3d52ef] to-transparent" />
+        <div className="h-[1px] bg-gradient-to-r from-transparent via-[#3d52ef]/30 to-transparent" />
       </header>
 
       {/* Main */}
       <main className="max-w-[1400px] mx-auto px-4 py-6">
         {loading && (
           <div className="text-center py-20">
-            <div className="inline-flex items-center gap-3 px-6 py-3 rounded-lg bg-[#111114] border border-[#1a1a1e]">
+            <div className="inline-flex items-center gap-3 px-6 py-3 rounded-lg bg-[--bg-surface] border border-[--border-subtle]">
               <div className="w-2 h-2 bg-[#3d52ef] rounded-full animate-pulse" />
               <div className="w-2 h-2 bg-[#6982ff] rounded-full animate-pulse" style={{ animationDelay: "0.2s" }} />
               <div className="w-2 h-2 bg-[#294199] rounded-full animate-pulse" style={{ animationDelay: "0.4s" }} />
-              <span className="text-xs font-mono text-[#515151] ml-2">Carregando ETFs...</span>
+              <span className="text-xs font-mono text-[#6982ff]/50 ml-2">Carregando ETFs...</span>
             </div>
           </div>
         )}
 
         {error && (
           <div className="text-center py-20">
-            <div className="inline-block px-6 py-4 rounded-lg bg-[#111114] border border-[#fe5b00]/20">
+            <div className="inline-block px-6 py-4 rounded-lg bg-[--bg-surface] border border-[#fe5b00]/20">
               <p className="text-[#fe5b00] font-mono text-sm mb-2">{error}</p>
-              <p className="text-[#515151] text-xs font-mono">
-                <code className="bg-[#0a0a0c] px-2 py-1 rounded border border-[#1a1a1e]">cd backend && uvicorn main:app --reload</code>
+              <p className="text-[#6982ff]/40 text-xs font-mono">
+                <code className="bg-[--bg-base] px-2 py-1 rounded border border-[--border-subtle]">cd backend && uvicorn main:app --reload</code>
               </p>
             </div>
           </div>
@@ -168,7 +165,7 @@ export default function Home() {
                     </button>
                     <button
                       onClick={() => setSelectedTickers([])}
-                      className="px-3 py-2 text-[#515151] hover:text-white text-xs font-mono"
+                      className="px-3 py-2 text-[#6982ff]/40 hover:text-[#f3f3f3] text-xs font-mono"
                     >
                       [limpar]
                     </button>
@@ -193,22 +190,22 @@ export default function Home() {
         )}
       </main>
 
-      {/* Footer ticker tape */}
-      <div className="mt-12 border-t border-[#1a1a1e]">
-        <div className="overflow-hidden whitespace-nowrap opacity-30">
+      {/* Footer */}
+      <div className="mt-12 border-t border-[--border-muted]">
+        <div className="overflow-hidden whitespace-nowrap opacity-20">
           <div className="ticker-tape inline-block py-2" style={{ animationDirection: "reverse", animationDuration: "40s" }}>
-            <span className="text-[9px] font-mono text-[#3d52ef] tracking-widest">
+            <span className="text-[9px] font-mono text-[#6982ff] tracking-widest">
               {TAPE_TEXT.repeat(12)}
             </span>
           </div>
         </div>
         <div className="max-w-[1400px] mx-auto px-4 py-3 flex items-center justify-between">
-          <span className="text-[9px] font-mono text-[#515151] uppercase tracking-widest">
+          <span className="text-[9px] font-mono text-[#6982ff]/30 uppercase tracking-widest">
             Dados: CVM | BRAPI | Yahoo Finance
           </span>
           <span className="text-xs font-mono font-bold">
-            <span className="text-[#3d52ef]">Fin</span><span className="text-[#515151]">trender</span>
-            <span className="text-[9px] text-[#515151]/50 ml-2">2026</span>
+            <span className="text-[#3d52ef]">Fin</span><span className="text-[#6982ff]/40">trender</span>
+            <span className="text-[9px] text-[#6982ff]/20 ml-2">2026</span>
           </span>
         </div>
       </div>

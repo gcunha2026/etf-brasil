@@ -17,10 +17,18 @@
   --ft-purple: #a649f0;
   --ft-yellow: #f0eb3e;
   --ft-lilac: #6982ff;
+
+  /* Surfaces - blue-tinted dark palette */
+  --bg-base: #13141d;
+  --bg-surface: #191a26;
+  --bg-raised: #1f2130;
+  --bg-hover: #252738;
+  --border-subtle: #262840;
+  --border-muted: #1e2035;
 }
 
 body {
-  background: #0a0a0c;
+  background: var(--bg-base);
   color: var(--ft-gray);
 }
 
@@ -47,27 +55,9 @@ body {
 /* Pixel grid pattern */
 .pixel-pattern {
   background-image:
-    linear-gradient(rgba(61, 82, 239, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(61, 82, 239, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(61, 82, 239, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(61, 82, 239, 0.025) 1px, transparent 1px);
   background-size: 8px 8px;
-}
-
-/* Gradient border effect */
-.gradient-border {
-  position: relative;
-}
-.gradient-border::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(135deg, var(--ft-blue), var(--ft-purple), var(--ft-blue-dark));
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
 }
 
 /* Glow effect on hover */
@@ -75,7 +65,7 @@ body {
   transition: box-shadow 0.3s ease;
 }
 .glow-hover:hover {
-  box-shadow: 0 0 20px rgba(61, 82, 239, 0.15);
+  box-shadow: 0 0 24px rgba(61, 82, 239, 0.1);
 }
 
 @layer utilities {

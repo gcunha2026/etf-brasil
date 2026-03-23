@@ -77,7 +77,7 @@ export default function CompareChart({ tickers, onRemove }: Props) {
 
   if (tickers.length === 0) {
     return (
-      <div className="bg-[#111114] border border-[#1a1a1e] rounded-lg p-12 text-center">
+      <div className="bg-[--bg-surface] border border-[--border-subtle] rounded-lg p-12 text-center">
         <div className="text-[#3d52ef] font-mono text-lg mb-2">+++</div>
         <p className="text-[#515151] font-mono text-sm">Selecione ETFs na tabela para comparar</p>
       </div>
@@ -85,7 +85,7 @@ export default function CompareChart({ tickers, onRemove }: Props) {
   }
 
   return (
-    <div className="bg-[#111114] border border-[#1a1a1e] rounded-lg overflow-hidden">
+    <div className="bg-[--bg-surface] border border-[--border-subtle] rounded-lg overflow-hidden">
       <div className="h-[2px] bg-gradient-to-r from-[#3d52ef] via-[#a649f0] to-[#3d52ef]" />
 
       <div className="p-5">
@@ -93,7 +93,7 @@ export default function CompareChart({ tickers, onRemove }: Props) {
         <div className="flex flex-wrap items-center gap-4 mb-5">
           <div className="flex items-center gap-2">
             <span className="text-[9px] font-mono text-[#515151] uppercase tracking-widest">Periodo</span>
-            <div className="flex gap-0.5 bg-[#0a0a0c] rounded-lg p-0.5 border border-[#1a1a1e]">
+            <div className="flex gap-0.5 bg-[--bg-base] rounded-lg p-0.5 border border-[--border-subtle]">
               {PERIODS.map((p) => (
                 <button
                   key={p.value}
@@ -115,7 +115,7 @@ export default function CompareChart({ tickers, onRemove }: Props) {
             <select
               value={benchmark}
               onChange={(e) => setBenchmark(e.target.value)}
-              className="bg-[#0a0a0c] border border-[#1a1a1e] rounded-lg px-3 py-1.5 text-[11px] font-mono text-[#c6c6c6] focus:outline-none focus:border-[#3d52ef]"
+              className="bg-[--bg-base] border border-[--border-subtle] rounded-lg px-3 py-1.5 text-[11px] font-mono text-[#c6c6c6] focus:outline-none focus:border-[#3d52ef]"
             >
               <option value="">---</option>
               {BENCHMARKS.map((b) => (
@@ -147,7 +147,7 @@ export default function CompareChart({ tickers, onRemove }: Props) {
             );
           })}
           {benchmark && (
-            <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-[12px] font-mono bg-[#0a0a0c] text-[#515151] border border-[#1a1a1e]">
+            <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-[12px] font-mono bg-[--bg-base] text-[#515151] border border-[--border-subtle]">
               <span className="w-1.5 h-1.5 rounded-full bg-[#515151]" />
               {benchmark}
               <button onClick={() => setBenchmark("")} className="hover:text-white text-[10px]">x</button>
@@ -167,10 +167,10 @@ export default function CompareChart({ tickers, onRemove }: Props) {
         ) : (
           <ResponsiveContainer width="100%" height={400}>
             <LineChart data={data} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#1a1a1e" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#262840" />
               <XAxis
                 dataKey="data"
-                stroke="#2a2a2e"
+                stroke="#262840"
                 tick={{ fontSize: 10, fill: "#515151", fontFamily: "monospace" }}
                 tickFormatter={(v) => {
                   const d = new Date(v + "T00:00:00");
@@ -179,13 +179,13 @@ export default function CompareChart({ tickers, onRemove }: Props) {
                 interval="preserveStartEnd"
               />
               <YAxis
-                stroke="#2a2a2e"
+                stroke="#262840"
                 tick={{ fontSize: 10, fill: "#515151", fontFamily: "monospace" }}
                 tickFormatter={(v) => `${v.toFixed(1)}%`}
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "#0a0a0c",
+                  backgroundColor: "#13141d",
                   border: "1px solid #3d52ef30",
                   borderRadius: "8px",
                   fontFamily: "monospace",
@@ -198,7 +198,7 @@ export default function CompareChart({ tickers, onRemove }: Props) {
               <Legend
                 wrapperStyle={{ fontFamily: "monospace", fontSize: "11px" }}
               />
-              <ReferenceLine y={0} stroke="#2a2a2e" strokeWidth={1} />
+              <ReferenceLine y={0} stroke="#262840" strokeWidth={1} />
               {allKeys.map((key) => (
                 <Line
                   key={key}
@@ -220,7 +220,7 @@ export default function CompareChart({ tickers, onRemove }: Props) {
           <p className="text-[9px] font-mono text-[#515151] uppercase tracking-widest">
             Retorno normalizado (%) a partir do inicio do periodo
           </p>
-          <p className="text-[9px] font-mono text-[#2a2a2e]">00983+++crYPt0)(</p>
+          <p className="text-[9px] font-mono text-[#6982ff]/25">00983+++crYPt0)(</p>
         </div>
       </div>
     </div>

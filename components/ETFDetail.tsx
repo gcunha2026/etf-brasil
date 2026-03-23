@@ -48,7 +48,7 @@ export default function ETFDetail({ ticker, onClose }: Props) {
 
   if (loading) {
     return (
-      <div className="bg-[#111114] border border-[#1a1a1e] rounded-lg p-8 text-center">
+      <div className="bg-[--bg-surface] border border-[--border-subtle] rounded-lg p-8 text-center">
         <div className="inline-flex items-center gap-3">
           <div className="w-2 h-2 bg-[#3d52ef] rounded-full animate-pulse" />
           <span className="text-xs font-mono text-[#515151]">Carregando {ticker}...</span>
@@ -59,7 +59,7 @@ export default function ETFDetail({ ticker, onClose }: Props) {
 
   if (!data || "error" in data) {
     return (
-      <div className="bg-[#111114] border border-[#1a1a1e] rounded-lg p-8 text-center">
+      <div className="bg-[--bg-surface] border border-[--border-subtle] rounded-lg p-8 text-center">
         <span className="text-[#fe5b00] font-mono text-sm">ETF nao encontrado</span>
         <button onClick={onClose} className="ml-4 text-[#515151] hover:text-white font-mono text-xs">[fechar]</button>
       </div>
@@ -72,7 +72,7 @@ export default function ETFDetail({ ticker, onClose }: Props) {
   }));
 
   return (
-    <div className="bg-[#111114] border border-[#1a1a1e] rounded-lg overflow-hidden">
+    <div className="bg-[--bg-surface] border border-[--border-subtle] rounded-lg overflow-hidden">
       {/* Blue accent top bar */}
       <div className="h-[2px] bg-gradient-to-r from-[#3d52ef] via-[#6982ff] to-[#a649f0]" />
 
@@ -92,7 +92,7 @@ export default function ETFDetail({ ticker, onClose }: Props) {
           </div>
           <button
             onClick={onClose}
-            className="text-[#515151] hover:text-[#3d52ef] font-mono text-xs px-3 py-1 rounded border border-[#1a1a1e] hover:border-[#3d52ef]/30 transition-all"
+            className="text-[#515151] hover:text-[#3d52ef] font-mono text-xs px-3 py-1 rounded border border-[--border-subtle] hover:border-[#3d52ef]/30 transition-all"
           >
             [fechar]
           </button>
@@ -106,7 +106,7 @@ export default function ETFDetail({ ticker, onClose }: Props) {
             { label: "Administrador", value: data.admin || "---" },
             { label: "Inicio", value: data.data_inicio || "---" },
           ].map((item) => (
-            <div key={item.label} className="bg-[#0a0a0c] rounded-lg px-4 py-3 border border-[#1a1a1e]">
+            <div key={item.label} className="bg-[--bg-base] rounded-lg px-4 py-3 border border-[--border-subtle]">
               <div className="text-[9px] font-mono text-[#515151] uppercase tracking-widest mb-1">{item.label}</div>
               <div className="text-sm text-[#f3f3f3] font-mono truncate" title={item.value}>{item.value}</div>
             </div>
@@ -138,10 +138,10 @@ export default function ETFDetail({ ticker, onClose }: Props) {
                     <stop offset="95%" stopColor="#3d52ef" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#1a1a1e" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#262840" />
                 <XAxis
                   dataKey="data"
-                  stroke="#2a2a2e"
+                  stroke="#262840"
                   tick={{ fontSize: 10, fill: "#515151", fontFamily: "monospace" }}
                   tickFormatter={(v) => {
                     const d = new Date(v + "T00:00:00");
@@ -150,14 +150,14 @@ export default function ETFDetail({ ticker, onClose }: Props) {
                   interval="preserveStartEnd"
                 />
                 <YAxis
-                  stroke="#2a2a2e"
+                  stroke="#262840"
                   tick={{ fontSize: 10, fill: "#515151", fontFamily: "monospace" }}
                   tickFormatter={(v) => `${v.toFixed(0)}`}
                   domain={["auto", "auto"]}
                 />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: "#0a0a0c",
+                    backgroundColor: "#13141d",
                     border: "1px solid #3d52ef30",
                     borderRadius: "8px",
                     fontFamily: "monospace",

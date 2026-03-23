@@ -13,7 +13,7 @@ interface Props {
 const PERIODS = ["1m", "3m", "6m", "1a", "2a"] as const;
 
 function ReturnCell({ value }: { value: number | null }) {
-  if (value === null || value === undefined) return <td className="px-3 py-2.5 text-center text-[#2a2a2e]">---</td>;
+  if (value === null || value === undefined) return <td className="px-3 py-2.5 text-center text-[#6982ff]/25">---</td>;
   const color = value >= 0 ? "text-[#3ef06b]" : "text-[#fe5b00]";
   return (
     <td className={`px-3 py-2.5 text-right font-mono text-[13px] ${color}`}>
@@ -100,7 +100,7 @@ export default function ETFTable({ etfs, onSelect, selectedTickers, onToggleComp
             placeholder="buscar ticker, nome, benchmark..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-7 pr-4 py-2.5 bg-[#111114] border border-[#1a1a1e] rounded-lg text-[#f3f3f3] font-mono text-sm placeholder-[#2a2a2e] focus:outline-none focus:border-[#3d52ef] focus:shadow-[0_0_0_1px_rgba(61,82,239,0.3)] transition-all"
+            className="w-full pl-7 pr-4 py-2.5 bg-[--bg-surface] border border-[--border-subtle] rounded-lg text-[#f3f3f3] font-mono text-sm placeholder-[#6982ff]/25 focus:outline-none focus:border-[#3d52ef] focus:shadow-[0_0_0_1px_rgba(61,82,239,0.3)] transition-all"
           />
         </div>
         {selectedTickers.length > 0 && (
@@ -111,11 +111,11 @@ export default function ETFTable({ etfs, onSelect, selectedTickers, onToggleComp
       </div>
 
       {/* Table */}
-      <div className="rounded-lg border border-[#1a1a1e] overflow-hidden glow-hover">
+      <div className="rounded-lg border border-[--border-subtle] overflow-hidden glow-hover">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="bg-[#111114] border-b border-[#1a1a1e]">
+              <tr className="bg-[--bg-surface] border-b border-[--border-subtle]">
                 <th className="px-3 py-3 text-center text-[9px] font-mono text-[#515151] w-10">
                   <span className="text-[#3d52ef]">#</span>
                 </th>
@@ -136,8 +136,8 @@ export default function ETFTable({ etfs, onSelect, selectedTickers, onToggleComp
               {sorted.map((etf, idx) => (
                 <tr
                   key={etf.ticker}
-                  className={`border-b border-[#111114] cursor-pointer transition-all hover:bg-[#3d52ef]/[0.04] ${
-                    selectedTickers.includes(etf.ticker) ? "bg-[#3d52ef]/[0.06]" : idx % 2 === 0 ? "bg-[#0a0a0c]" : "bg-[#0e0e10]"
+                  className={`border-b border-[#111114] cursor-pointer transition-all hover:bg-[--bg-hover] ${
+                    selectedTickers.includes(etf.ticker) ? "bg-[#3d52ef]/[0.06]" : idx % 2 === 0 ? "bg-[--bg-base]" : "bg-[--bg-surface]/50"
                   }`}
                   onClick={() => onSelect(etf.ticker)}
                 >
@@ -146,7 +146,7 @@ export default function ETFTable({ etfs, onSelect, selectedTickers, onToggleComp
                       type="checkbox"
                       checked={selectedTickers.includes(etf.ticker)}
                       onChange={() => onToggleCompare(etf.ticker)}
-                      className="rounded-sm border-[#2a2a2e] bg-transparent text-[#3d52ef] focus:ring-[#3d52ef] cursor-pointer accent-[#3d52ef] w-3.5 h-3.5"
+                      className="rounded-sm border-[--border-subtle] bg-transparent text-[#3d52ef] focus:ring-[#3d52ef] cursor-pointer accent-[#3d52ef] w-3.5 h-3.5"
                     />
                   </td>
                   <td className="px-3 py-2.5">
@@ -168,7 +168,7 @@ export default function ETFTable({ etfs, onSelect, selectedTickers, onToggleComp
                   <td className="px-3 py-2.5 text-right font-mono text-[12px] text-[#515151]">
                     {formatNumber(etf.patrimonio)}
                   </td>
-                  <td className="px-3 py-2.5 text-center font-mono text-[11px] text-[#2a2a2e]">
+                  <td className="px-3 py-2.5 text-center font-mono text-[11px] text-[#6982ff]/25">
                     {etf.ultima_cota
                       ? new Date(etf.ultima_cota + "T00:00:00").toLocaleDateString("pt-BR")
                       : "---"}
@@ -185,7 +185,7 @@ export default function ETFTable({ etfs, onSelect, selectedTickers, onToggleComp
 
       <div className="mt-3 flex items-center justify-between">
         <p className="text-[9px] font-mono text-[#515151] uppercase tracking-widest">{sorted.length} ETFs</p>
-        <p className="text-[9px] font-mono text-[#2a2a2e]">00983+++crYPt0)(</p>
+        <p className="text-[9px] font-mono text-[#6982ff]/25">00983+++crYPt0)(</p>
       </div>
     </div>
   );
