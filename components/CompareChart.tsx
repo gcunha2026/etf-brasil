@@ -27,7 +27,7 @@ const PERIODS = [
   { label: "2A", value: "2a" },
 ];
 
-// Fintrender brand colors (primary + secondary palette)
+// Fintrender brand palette
 const COLORS = [
   "#3d52ef", "#3ef06b", "#fe5b00", "#f0eb3e", "#a649f0",
   "#1ad0e9", "#6982ff", "#294199", "#ec4899", "#14b8a6",
@@ -55,158 +55,174 @@ export default function CompareChart({ tickers, onRemove }: Props) {
       setSeries(result.series);
 
       const dateMap = new Map<string, Record<string, number | string>>();
-
       for (const [key, points] of Object.entries(result.series)) {
         for (const p of points) {
-          if (!dateMap.has(p.data)) {
-            dateMap.set(p.data, { data: p.data });
-          }
+          if (!dateMap.has(p.data)) dateMap.set(p.data, { data: p.data });
           dateMap.get(p.data)![key] = p.valor;
         }
       }
 
-      const merged = Array.from(dateMap.values()).sort((a, b) =>
+      setData(Array.from(dateMap.values()).sort((a, b) =>
         (a.data as string).localeCompare(b.data as string)
-      );
-
-      setData(merged);
+      ));
     } catch (e) {
       console.error("Error loading compare data:", e);
     }
     setLoading(false);
   }, [tickers, period, benchmark]);
 
-  useEffect(() => {
-    loadData();
-  }, [loadData]);
+  useEffect(() => { loadData(); }, [loadData]);
 
   const allKeys = Object.keys(series);
 
   if (tickers.length === 0) {
     return (
-      <div className="bg-[#1c1c1c] border border-[#2a2a2a] rounded-lg p-8 text-center text-[#515151]">
-        Selecione ETFs na tabela para comparar
+      <div className="bg-[#111114] border border-[#1a1a1e] rounded-lg p-12 text-center">
+        <div className="text-[#3d52ef] font-mono text-lg mb-2">+++</div>
+        <p className="text-[#515151] font-mono text-sm">Selecione ETFs na tabela para comparar</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-[#1c1c1c] border border-[#2a2a2a] rounded-lg p-4">
-      {/* Controls */}
-      <div className="flex flex-wrap items-center gap-3 mb-4">
-        <span className="text-[10px] text-[#515151] uppercase tracking-wider">Periodo:</span>
-        {PERIODS.map((p) => (
-          <button
-            key={p.value}
-            onClick={() => setPeriod(p.value)}
-            className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
-              period === p.value
-                ? "bg-[#3d52ef] text-white"
-                : "bg-[#2a2a2a] text-[#515151] hover:text-[#f3f3f3]"
-            }`}
-          >
-            {p.label}
-          </button>
-        ))}
+    <div className="bg-[#111114] border border-[#1a1a1e] rounded-lg overflow-hidden">
+      <div className="h-[2px] bg-gradient-to-r from-[#3d52ef] via-[#a649f0] to-[#3d52ef]" />
 
-        <span className="ml-4 text-[10px] text-[#515151] uppercase tracking-wider">Benchmark:</span>
-        <select
-          value={benchmark}
-          onChange={(e) => setBenchmark(e.target.value)}
-          className="bg-[#2a2a2a] border border-[#3a3a3a] rounded px-3 py-1 text-sm text-[#c6c6c6] focus:outline-none focus:border-[#3d52ef]"
-        >
-          <option value="">Nenhum</option>
-          {BENCHMARKS.map((b) => (
-            <option key={b} value={b}>{b}</option>
-          ))}
-        </select>
-      </div>
+      <div className="p-5">
+        {/* Controls */}
+        <div className="flex flex-wrap items-center gap-4 mb-5">
+          <div className="flex items-center gap-2">
+            <span className="text-[9px] font-mono text-[#515151] uppercase tracking-widest">Periodo</span>
+            <div className="flex gap-0.5 bg-[#0a0a0c] rounded-lg p-0.5 border border-[#1a1a1e]">
+              {PERIODS.map((p) => (
+                <button
+                  key={p.value}
+                  onClick={() => setPeriod(p.value)}
+                  className={`px-3 py-1.5 rounded-md text-[11px] font-mono font-bold transition-all ${
+                    period === p.value
+                      ? "bg-[#3d52ef] text-white shadow-lg shadow-[#3d52ef]/20"
+                      : "text-[#515151] hover:text-white"
+                  }`}
+                >
+                  {p.label}
+                </button>
+              ))}
+            </div>
+          </div>
 
-      {/* Selected tickers */}
-      <div className="flex flex-wrap gap-2 mb-4">
-        {tickers.map((t, i) => (
-          <span
-            key={t}
-            className="inline-flex items-center gap-1 px-2 py-1 rounded text-sm font-mono border"
-            style={{
-              backgroundColor: COLORS[i % COLORS.length] + "15",
-              color: COLORS[i % COLORS.length],
-              borderColor: COLORS[i % COLORS.length] + "30",
-            }}
-          >
-            {t}
-            <button
-              onClick={() => onRemove(t)}
-              className="ml-1 hover:opacity-70"
+          <div className="flex items-center gap-2">
+            <span className="text-[9px] font-mono text-[#515151] uppercase tracking-widest">Bench</span>
+            <select
+              value={benchmark}
+              onChange={(e) => setBenchmark(e.target.value)}
+              className="bg-[#0a0a0c] border border-[#1a1a1e] rounded-lg px-3 py-1.5 text-[11px] font-mono text-[#c6c6c6] focus:outline-none focus:border-[#3d52ef]"
             >
-              x
-            </button>
-          </span>
-        ))}
-        {benchmark && (
-          <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-sm font-mono bg-[#2a2a2a] text-[#515151] border border-[#3a3a3a]">
-            {benchmark}
-            <button onClick={() => setBenchmark("")} className="ml-1 hover:text-[#f3f3f3]">x</button>
-          </span>
-        )}
-      </div>
-
-      {/* Chart */}
-      {loading ? (
-        <div className="h-[400px] flex items-center justify-center text-[#515151]">
-          <div className="inline-block w-5 h-5 border-2 border-[#3d52ef] border-t-transparent rounded-full animate-spin mr-3" />
-          Carregando...
+              <option value="">---</option>
+              {BENCHMARKS.map((b) => (
+                <option key={b} value={b}>{b}</option>
+              ))}
+            </select>
+          </div>
         </div>
-      ) : (
-        <ResponsiveContainer width="100%" height={400}>
-          <LineChart data={data} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#2a2a2a" />
-            <XAxis
-              dataKey="data"
-              stroke="#515151"
-              tick={{ fontSize: 11 }}
-              tickFormatter={(v) => {
-                const d = new Date(v + "T00:00:00");
-                return `${d.getDate().toString().padStart(2, "0")}/${(d.getMonth() + 1).toString().padStart(2, "0")}`;
-              }}
-              interval="preserveStartEnd"
-            />
-            <YAxis
-              stroke="#515151"
-              tick={{ fontSize: 11 }}
-              tickFormatter={(v) => `${v.toFixed(1)}%`}
-            />
-            <Tooltip
-              contentStyle={{ backgroundColor: "#161616", border: "1px solid #2a2a2a", borderRadius: "8px", fontFamily: "monospace" }}
-              labelStyle={{ color: "#515151" }}
-              formatter={(value, name) => [`${Number(value).toFixed(2)}%`, name]}
-              labelFormatter={(label) => {
-                const d = new Date(label + "T00:00:00");
-                return d.toLocaleDateString("pt-BR");
-              }}
-            />
-            <Legend />
-            <ReferenceLine y={0} stroke="#2a2a2a" strokeWidth={1} />
-            {allKeys.map((key) => (
-              <Line
-                key={key}
-                type="monotone"
-                dataKey={key}
-                stroke={key.startsWith("BM:") ? "#515151" : COLORS[tickers.indexOf(key) % COLORS.length]}
-                strokeWidth={key.startsWith("BM:") ? 1.5 : 2}
-                strokeDasharray={key.startsWith("BM:") ? "5 5" : undefined}
-                dot={false}
-                connectNulls
-                name={key.replace("BM:", "")}
-              />
-            ))}
-          </LineChart>
-        </ResponsiveContainer>
-      )}
 
-      <p className="mt-2 text-[10px] text-[#515151] text-center uppercase tracking-wider">
-        Retorno normalizado (%) a partir do inicio do periodo
-      </p>
+        {/* Selected tickers */}
+        <div className="flex flex-wrap gap-2 mb-5">
+          {tickers.map((t, i) => {
+            const color = COLORS[i % COLORS.length];
+            return (
+              <span
+                key={t}
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-[12px] font-mono font-bold border transition-all hover:shadow-lg"
+                style={{
+                  backgroundColor: color + "10",
+                  color: color,
+                  borderColor: color + "25",
+                  boxShadow: `0 0 0 0 ${color}00`,
+                }}
+              >
+                <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: color }} />
+                {t}
+                <button onClick={() => onRemove(t)} className="hover:opacity-60 text-[10px]">x</button>
+              </span>
+            );
+          })}
+          {benchmark && (
+            <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-[12px] font-mono bg-[#0a0a0c] text-[#515151] border border-[#1a1a1e]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#515151]" />
+              {benchmark}
+              <button onClick={() => setBenchmark("")} className="hover:text-white text-[10px]">x</button>
+            </span>
+          )}
+        </div>
+
+        {/* Chart */}
+        {loading ? (
+          <div className="h-[400px] flex items-center justify-center">
+            <div className="inline-flex items-center gap-3">
+              <div className="w-2 h-2 bg-[#3d52ef] rounded-full animate-pulse" />
+              <div className="w-2 h-2 bg-[#6982ff] rounded-full animate-pulse" style={{ animationDelay: "0.2s" }} />
+              <div className="w-2 h-2 bg-[#294199] rounded-full animate-pulse" style={{ animationDelay: "0.4s" }} />
+            </div>
+          </div>
+        ) : (
+          <ResponsiveContainer width="100%" height={400}>
+            <LineChart data={data} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#1a1a1e" />
+              <XAxis
+                dataKey="data"
+                stroke="#2a2a2e"
+                tick={{ fontSize: 10, fill: "#515151", fontFamily: "monospace" }}
+                tickFormatter={(v) => {
+                  const d = new Date(v + "T00:00:00");
+                  return `${d.getDate().toString().padStart(2, "0")}/${(d.getMonth() + 1).toString().padStart(2, "0")}`;
+                }}
+                interval="preserveStartEnd"
+              />
+              <YAxis
+                stroke="#2a2a2e"
+                tick={{ fontSize: 10, fill: "#515151", fontFamily: "monospace" }}
+                tickFormatter={(v) => `${v.toFixed(1)}%`}
+              />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: "#0a0a0c",
+                  border: "1px solid #3d52ef30",
+                  borderRadius: "8px",
+                  fontFamily: "monospace",
+                  fontSize: "12px",
+                }}
+                labelStyle={{ color: "#515151" }}
+                formatter={(value, name) => [`${Number(value).toFixed(2)}%`, name]}
+                labelFormatter={(label) => new Date(label + "T00:00:00").toLocaleDateString("pt-BR")}
+              />
+              <Legend
+                wrapperStyle={{ fontFamily: "monospace", fontSize: "11px" }}
+              />
+              <ReferenceLine y={0} stroke="#2a2a2e" strokeWidth={1} />
+              {allKeys.map((key) => (
+                <Line
+                  key={key}
+                  type="monotone"
+                  dataKey={key}
+                  stroke={key.startsWith("BM:") ? "#515151" : COLORS[tickers.indexOf(key) % COLORS.length]}
+                  strokeWidth={key.startsWith("BM:") ? 1.5 : 2.5}
+                  strokeDasharray={key.startsWith("BM:") ? "5 5" : undefined}
+                  dot={false}
+                  connectNulls
+                  name={key.replace("BM:", "")}
+                />
+              ))}
+            </LineChart>
+          </ResponsiveContainer>
+        )}
+
+        <div className="mt-3 flex items-center justify-between">
+          <p className="text-[9px] font-mono text-[#515151] uppercase tracking-widest">
+            Retorno normalizado (%) a partir do inicio do periodo
+          </p>
+          <p className="text-[9px] font-mono text-[#2a2a2e]">00983+++crYPt0)(</p>
+        </div>
+      </div>
     </div>
   );
 }

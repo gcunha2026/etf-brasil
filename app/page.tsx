@@ -8,6 +8,8 @@ import { fetchETFs, ETF } from "@/lib/api";
 
 type Tab = "lista" | "comparador";
 
+const TAPE_TEXT = "00983+++crYPt0)(  ETF BRASIL  00983+++crYPt0)(  TURNING DATA INTO INTELLIGENCE  ";
+
 export default function Home() {
   const [etfs, setEtfs] = useState<ETF[]>([]);
   const [loading, setLoading] = useState(true);
@@ -23,7 +25,7 @@ export default function Home() {
         setLoading(false);
       })
       .catch((e) => {
-        setError("Erro ao carregar dados. Verifique se o backend esta rodando.");
+        setError("Erro ao carregar dados.");
         setLoading(false);
         console.error(e);
       });
@@ -44,70 +46,102 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0d0d0d]">
+    <div className="min-h-screen bg-[#0a0a0c] pixel-pattern">
+      {/* Ticker tape bar */}
+      <div className="bg-[#3d52ef] overflow-hidden whitespace-nowrap">
+        <div className="ticker-tape inline-block py-1">
+          <span className="text-[10px] font-mono text-white/60 tracking-widest">
+            {TAPE_TEXT.repeat(12)}
+          </span>
+        </div>
+      </div>
+
       {/* Header */}
-      <header className="border-b border-[#2a2a2a] bg-[#0d0d0d]/95 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-[1400px] mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            {/* Fintrender logo mark */}
-            <svg width="28" height="28" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M20 15 H80 V35 H45 V45 H70 V65 H45 V85 H20 V15Z" fill="#3d52ef"/>
-              <path d="M55 25 Q75 25 75 35 Q75 45 55 50 L70 65 H45 L55 25Z" fill="#294199" opacity="0.6"/>
-            </svg>
+      <header className="relative overflow-hidden">
+        {/* Blue gradient bg */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#3d52ef] via-[#294199] to-[#0a0a0c] opacity-20" />
+        <div className="relative max-w-[1400px] mx-auto px-4 py-6">
+          <div className="flex items-end justify-between">
             <div>
-              <h1 className="text-lg font-bold text-[#f3f3f3] tracking-tight">
-                <span className="text-[#3d52ef]">Fin</span>trender
-              </h1>
-              <p className="text-[10px] text-[#515151] uppercase tracking-widest">ETF Brasil</p>
+              {/* Logo area */}
+              <div className="flex items-center gap-4 mb-2">
+                {/* Pixel block logo mark */}
+                <div className="w-10 h-10 relative">
+                  <div className="absolute top-0 left-0 w-4 h-4 bg-[#3d52ef] rounded-[2px]" />
+                  <div className="absolute top-0 left-5 w-5 h-4 bg-[#3d52ef] rounded-[2px]" />
+                  <div className="absolute top-5 left-0 w-4 h-5 bg-[#3d52ef] rounded-[2px]" />
+                  <div className="absolute top-5 left-5 w-3 h-3 bg-[#6982ff] rounded-[2px]" />
+                </div>
+                <div>
+                  <h1 className="text-2xl font-bold tracking-tight text-white">
+                    <span className="text-[#3d52ef]">Fin</span>trender
+                  </h1>
+                </div>
+              </div>
+              <p className="text-[11px] font-mono text-[#515151] ml-14">
+                turning <span className="text-[#3d52ef]">ETF</span> intelligence <span className="font-bold text-white">UP</span>
+              </p>
+            </div>
+
+            {/* Nav tabs */}
+            <div className="flex items-center gap-6">
+              <nav className="flex gap-1 bg-[#111114] rounded-lg p-1 border border-[#1a1a1e]">
+                {([
+                  { key: "lista", label: "Lista" },
+                  { key: "comparador", label: "Comparador" },
+                ] as const).map((tab) => (
+                  <button
+                    key={tab.key}
+                    onClick={() => setActiveTab(tab.key)}
+                    className={`px-5 py-2 rounded-md text-xs font-mono font-bold uppercase tracking-wider transition-all ${
+                      activeTab === tab.key
+                        ? "bg-[#3d52ef] text-white shadow-lg shadow-[#3d52ef]/20"
+                        : "text-[#515151] hover:text-white"
+                    }`}
+                  >
+                    {tab.label}
+                    {tab.key === "comparador" && selectedTickers.length > 0 && (
+                      <span className="ml-2 bg-white/20 text-white text-[10px] rounded px-1.5 py-0.5">
+                        {selectedTickers.length}
+                      </span>
+                    )}
+                  </button>
+                ))}
+              </nav>
+
+              <div className="text-right">
+                <div className="text-xl font-bold font-mono text-white">{etfs.length}</div>
+                <div className="text-[9px] text-[#515151] uppercase tracking-widest">ETFs</div>
+              </div>
             </div>
           </div>
-
-          {/* Tabs */}
-          <nav className="flex gap-1">
-            {([
-              { key: "lista", label: "Lista de ETFs" },
-              { key: "comparador", label: "Comparador" },
-            ] as const).map((tab) => (
-              <button
-                key={tab.key}
-                onClick={() => setActiveTab(tab.key)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                  activeTab === tab.key
-                    ? "bg-[#3d52ef] text-white"
-                    : "text-[#515151] hover:text-[#f3f3f3] hover:bg-[#1c1c1c]"
-                }`}
-              >
-                {tab.label}
-                {tab.key === "comparador" && selectedTickers.length > 0 && (
-                  <span className="ml-2 bg-[#294199] text-white text-xs rounded-full px-1.5 py-0.5">
-                    {selectedTickers.length}
-                  </span>
-                )}
-              </button>
-            ))}
-          </nav>
-
-          <div className="text-xs text-[#515151] font-mono">
-            {etfs.length} ETFs
-          </div>
         </div>
+
+        {/* Decorative bottom line */}
+        <div className="h-[2px] bg-gradient-to-r from-transparent via-[#3d52ef] to-transparent" />
       </header>
 
       {/* Main */}
       <main className="max-w-[1400px] mx-auto px-4 py-6">
         {loading && (
-          <div className="text-center py-20 text-[#515151]">
-            <div className="inline-block w-6 h-6 border-2 border-[#3d52ef] border-t-transparent rounded-full animate-spin mb-4" />
-            <p>Carregando ETFs...</p>
+          <div className="text-center py-20">
+            <div className="inline-flex items-center gap-3 px-6 py-3 rounded-lg bg-[#111114] border border-[#1a1a1e]">
+              <div className="w-2 h-2 bg-[#3d52ef] rounded-full animate-pulse" />
+              <div className="w-2 h-2 bg-[#6982ff] rounded-full animate-pulse" style={{ animationDelay: "0.2s" }} />
+              <div className="w-2 h-2 bg-[#294199] rounded-full animate-pulse" style={{ animationDelay: "0.4s" }} />
+              <span className="text-xs font-mono text-[#515151] ml-2">Carregando ETFs...</span>
+            </div>
           </div>
         )}
 
         {error && (
           <div className="text-center py-20">
-            <p className="text-[#fe5b00] mb-4">{error}</p>
-            <p className="text-[#515151] text-sm">
-              Inicie o backend com: <code className="bg-[#1c1c1c] px-2 py-1 rounded border border-[#2a2a2a]">cd backend && uvicorn main:app --reload</code>
-            </p>
+            <div className="inline-block px-6 py-4 rounded-lg bg-[#111114] border border-[#fe5b00]/20">
+              <p className="text-[#fe5b00] font-mono text-sm mb-2">{error}</p>
+              <p className="text-[#515151] text-xs font-mono">
+                <code className="bg-[#0a0a0c] px-2 py-1 rounded border border-[#1a1a1e]">cd backend && uvicorn main:app --reload</code>
+              </p>
+            </div>
           </div>
         )}
 
@@ -125,18 +159,18 @@ export default function Home() {
             {activeTab === "lista" && (
               <div>
                 {selectedTickers.length > 0 && (
-                  <div className="mb-4 flex items-center gap-2">
+                  <div className="mb-4 flex items-center gap-3">
                     <button
                       onClick={() => setActiveTab("comparador")}
-                      className="px-4 py-2 bg-[#3d52ef] text-white rounded-lg text-sm font-medium hover:bg-[#294199] transition-colors"
+                      className="px-5 py-2 bg-[#3d52ef] text-white rounded-lg text-xs font-mono font-bold uppercase tracking-wider hover:shadow-lg hover:shadow-[#3d52ef]/20 transition-all"
                     >
-                      Comparar {selectedTickers.length} ETFs selecionados
+                      Comparar {selectedTickers.length} ETFs +++
                     </button>
                     <button
                       onClick={() => setSelectedTickers([])}
-                      className="px-3 py-2 text-[#515151] hover:text-[#f3f3f3] text-sm"
+                      className="px-3 py-2 text-[#515151] hover:text-white text-xs font-mono"
                     >
-                      Limpar
+                      [limpar]
                     </button>
                   </div>
                 )}
@@ -159,15 +193,25 @@ export default function Home() {
         )}
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-[#2a2a2a] py-4 mt-12">
-        <div className="max-w-[1400px] mx-auto px-4 flex items-center justify-between text-[10px] text-[#515151] uppercase tracking-wider">
-          <span>Dados: CVM | BRAPI | Yahoo Finance</span>
-          <span className="font-medium">
-            <span className="text-[#3d52ef]">Fin</span>trender
+      {/* Footer ticker tape */}
+      <div className="mt-12 border-t border-[#1a1a1e]">
+        <div className="overflow-hidden whitespace-nowrap opacity-30">
+          <div className="ticker-tape inline-block py-2" style={{ animationDirection: "reverse", animationDuration: "40s" }}>
+            <span className="text-[9px] font-mono text-[#3d52ef] tracking-widest">
+              {TAPE_TEXT.repeat(12)}
+            </span>
+          </div>
+        </div>
+        <div className="max-w-[1400px] mx-auto px-4 py-3 flex items-center justify-between">
+          <span className="text-[9px] font-mono text-[#515151] uppercase tracking-widest">
+            Dados: CVM | BRAPI | Yahoo Finance
+          </span>
+          <span className="text-xs font-mono font-bold">
+            <span className="text-[#3d52ef]">Fin</span><span className="text-[#515151]">trender</span>
+            <span className="text-[9px] text-[#515151]/50 ml-2">2026</span>
           </span>
         </div>
-      </footer>
+      </div>
     </div>
   );
 }
