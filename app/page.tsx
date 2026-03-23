@@ -49,8 +49,8 @@ export default function Home() {
     <div className="min-h-screen bg-[--bg-base] pixel-pattern">
       {/* Ticker tape bar */}
       <div className="bg-[#202020] overflow-hidden whitespace-nowrap">
-        <div className="ticker-tape inline-block py-1.5">
-          <span className="text-[10px] font-mono text-[#6982ff] tracking-widest">
+        <div className="ticker-tape inline-block py-3">
+          <span className="text-[12px] font-mono text-[#6982ff] tracking-widest">
             {TAPE_TEXT.repeat(12)}
           </span>
         </div>
@@ -188,9 +188,9 @@ export default function Home() {
 
       {/* Footer */}
       <div className="mt-12 border-t border-[--border-subtle]">
-        <div className="overflow-hidden whitespace-nowrap">
-          <div className="ticker-tape inline-block py-2" style={{ animationDirection: "reverse", animationDuration: "40s" }}>
-            <span className="text-[9px] font-mono text-[#3d52ef]/15 tracking-widest">
+        <div className="overflow-hidden whitespace-nowrap bg-[#202020]">
+          <div className="ticker-tape inline-block py-3" style={{ animationDirection: "reverse", animationDuration: "40s" }}>
+            <span className="text-[12px] font-mono text-[#6982ff] tracking-widest">
               {TAPE_TEXT.repeat(12)}
             </span>
           </div>
