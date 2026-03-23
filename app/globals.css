@@ -11,38 +11,39 @@
   --ft-gray2: #515151;
   --ft-gray3: #c6c6c6;
   --ft-gray4: #dddddd;
-  --ft-green: #3ef06b;
-  --ft-orange: #fe5b00;
+  --ft-green: #16a34a;
+  --ft-orange: #dc2626;
   --ft-cyan: #1ad0e9;
   --ft-purple: #a649f0;
   --ft-yellow: #f0eb3e;
   --ft-lilac: #6982ff;
 
-  /* Surfaces - blue-tinted dark palette */
-  --bg-base: #13141d;
-  --bg-surface: #191a26;
-  --bg-raised: #1f2130;
-  --bg-hover: #252738;
-  --border-subtle: #262840;
-  --border-muted: #1e2035;
+  /* Light surfaces */
+  --bg-base: #f3f3f3;
+  --bg-surface: #ffffff;
+  --bg-raised: #f8f8fa;
+  --bg-hover: #eeeef4;
+  --border-subtle: #e2e2ea;
+  --border-muted: #ececf0;
+  --text-primary: #202020;
+  --text-secondary: #515151;
+  --text-muted: #999;
 }
 
 body {
   background: var(--bg-base);
-  color: var(--ft-gray);
+  color: var(--text-primary);
 }
 
-/* Scrollbar */
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--ft-blue-dark); border-radius: 2px; }
+::-webkit-scrollbar-thumb { background: var(--ft-blue-light); border-radius: 2px; }
 
 ::selection {
-  background: rgba(61, 82, 239, 0.4);
-  color: #fff;
+  background: rgba(61, 82, 239, 0.15);
+  color: #202020;
 }
 
-/* Ticker tape animation */
 @keyframes ticker {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
@@ -52,20 +53,18 @@ body {
   animation: ticker 30s linear infinite;
 }
 
-/* Pixel grid pattern */
 .pixel-pattern {
   background-image:
-    linear-gradient(rgba(61, 82, 239, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(61, 82, 239, 0.025) 1px, transparent 1px);
+    linear-gradient(rgba(61, 82, 239, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(61, 82, 239, 0.03) 1px, transparent 1px);
   background-size: 8px 8px;
 }
 
-/* Glow effect on hover */
 .glow-hover {
   transition: box-shadow 0.3s ease;
 }
 .glow-hover:hover {
-  box-shadow: 0 0 24px rgba(61, 82, 239, 0.1);
+  box-shadow: 0 0 24px rgba(61, 82, 239, 0.08);
 }
 
 @layer utilities {
