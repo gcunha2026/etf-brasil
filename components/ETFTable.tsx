@@ -13,8 +13,8 @@ interface Props {
 const PERIODS = ["1m", "3m", "6m", "1a", "2a"] as const;
 
 function ReturnCell({ value }: { value: number | null }) {
-  if (value === null || value === undefined) return <td className="px-3 py-2 text-center text-gray-600">-</td>;
-  const color = value >= 0 ? "text-green-400" : "text-red-400";
+  if (value === null || value === undefined) return <td className="px-3 py-2 text-center text-[#515151]">-</td>;
+  const color = value >= 0 ? "text-[#3ef06b]" : "text-[#fe5b00]";
   return (
     <td className={`px-3 py-2 text-right font-mono text-sm ${color}`}>
       {value >= 0 ? "+" : ""}{value.toFixed(2)}%
@@ -79,7 +79,7 @@ export default function ETFTable({ etfs, onSelect, selectedTickers, onToggleComp
 
   const SortHeader = ({ label, field }: { label: string; field: SortKey }) => (
     <th
-      className="px-3 py-3 text-left text-xs font-medium text-gray-400 uppercase cursor-pointer hover:text-white select-none"
+      className="px-3 py-3 text-left text-[10px] font-medium text-[#515151] uppercase tracking-wider cursor-pointer hover:text-[#f3f3f3] select-none transition-colors"
       onClick={() => handleSort(field)}
     >
       {label} {sortKey === field ? (sortDir === "asc" ? "▲" : "▼") : ""}
@@ -95,10 +95,10 @@ export default function ETFTable({ etfs, onSelect, selectedTickers, onToggleComp
           placeholder="Buscar ETF por ticker, nome ou benchmark..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full max-w-md px-4 py-2 bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-500"
+          className="w-full max-w-md px-4 py-2 bg-[#1c1c1c] border border-[#2a2a2a] rounded-lg text-[#f3f3f3] placeholder-[#515151] focus:outline-none focus:border-[#3d52ef] transition-colors"
         />
         {selectedTickers.length > 0 && (
-          <span className="ml-4 text-sm text-gray-400">
+          <span className="ml-4 text-sm text-[#515151]">
             {selectedTickers.length} selecionado(s) para comparar
           </span>
         )}
@@ -107,19 +107,19 @@ export default function ETFTable({ etfs, onSelect, selectedTickers, onToggleComp
       {/* Table */}
       <div className="overflow-x-auto rounded-lg border border-[#2a2a2a]">
         <table className="w-full">
-          <thead className="bg-[#141414]">
+          <thead className="bg-[#161616]">
             <tr>
-              <th className="px-3 py-3 text-center text-xs font-medium text-gray-400 w-10">
+              <th className="px-3 py-3 text-center text-[10px] font-medium text-[#515151] w-10">
                 <span title="Selecione para comparar">Comp.</span>
               </th>
               <SortHeader label="Ticker" field="ticker" />
-              <th className="px-3 py-3 text-left text-xs font-medium text-gray-400">Nome</th>
-              <th className="px-3 py-3 text-left text-xs font-medium text-gray-400">Benchmark</th>
+              <th className="px-3 py-3 text-left text-[10px] font-medium text-[#515151] uppercase tracking-wider">Nome</th>
+              <th className="px-3 py-3 text-left text-[10px] font-medium text-[#515151] uppercase tracking-wider">Benchmark</th>
               <SortHeader label="Emissor" field="admin" />
-              <SortHeader label="Preço" field="preco" />
+              <SortHeader label="Preco" field="preco" />
               <SortHeader label="Taxa Adm" field="taxa_adm" />
-              <SortHeader label="Patrimônio" field="patrimonio" />
-              <SortHeader label="Últ. Cota" field="ultima_cota" />
+              <SortHeader label="Patrimonio" field="patrimonio" />
+              <SortHeader label="Ult. Cota" field="ultima_cota" />
               <SortHeader label="1M" field="ret_1m" />
               <SortHeader label="3M" field="ret_3m" />
               <SortHeader label="6M" field="ret_6m" />
@@ -131,7 +131,7 @@ export default function ETFTable({ etfs, onSelect, selectedTickers, onToggleComp
             {sorted.map((etf) => (
               <tr
                 key={etf.ticker}
-                className="hover:bg-[#1a1a1a] transition-colors cursor-pointer"
+                className="hover:bg-[#1c1c1c] transition-colors cursor-pointer"
                 onClick={() => onSelect(etf.ticker)}
               >
                 <td className="px-3 py-2 text-center" onClick={(e) => e.stopPropagation()}>
@@ -139,27 +139,27 @@ export default function ETFTable({ etfs, onSelect, selectedTickers, onToggleComp
                     type="checkbox"
                     checked={selectedTickers.includes(etf.ticker)}
                     onChange={() => onToggleCompare(etf.ticker)}
-                    className="rounded border-gray-600 bg-[#1a1a1a] text-blue-500 focus:ring-blue-500 cursor-pointer"
+                    className="rounded border-[#2a2a2a] bg-[#1c1c1c] text-[#3d52ef] focus:ring-[#3d52ef] cursor-pointer accent-[#3d52ef]"
                   />
                 </td>
-                <td className="px-3 py-2 font-mono font-bold text-blue-400 text-sm">{etf.ticker}</td>
-                <td className="px-3 py-2 text-sm text-gray-300 max-w-[200px] truncate" title={etf.nome}>
+                <td className="px-3 py-2 font-mono font-bold text-[#3d52ef] text-sm">{etf.ticker}</td>
+                <td className="px-3 py-2 text-sm text-[#c6c6c6] max-w-[200px] truncate" title={etf.nome}>
                   {etf.nome_curto || etf.nome}
                 </td>
-                <td className="px-3 py-2 text-sm text-gray-400">{etf.benchmark || "-"}</td>
-                <td className="px-3 py-2 text-sm text-gray-400 max-w-[150px] truncate" title={etf.admin || ""}>
+                <td className="px-3 py-2 text-sm text-[#515151]">{etf.benchmark || "-"}</td>
+                <td className="px-3 py-2 text-sm text-[#515151] max-w-[150px] truncate" title={etf.admin || ""}>
                   {etf.admin || "-"}
                 </td>
-                <td className="px-3 py-2 text-right font-mono text-sm">
+                <td className="px-3 py-2 text-right font-mono text-sm text-[#f3f3f3]">
                   {etf.preco ? `R$ ${etf.preco.toFixed(2)}` : "-"}
                 </td>
-                <td className="px-3 py-2 text-right font-mono text-sm text-gray-400">
+                <td className="px-3 py-2 text-right font-mono text-sm text-[#515151]">
                   {etf.taxa_adm !== null ? `${etf.taxa_adm.toFixed(2)}%` : "-"}
                 </td>
-                <td className="px-3 py-2 text-right text-sm text-gray-400">
+                <td className="px-3 py-2 text-right text-sm text-[#515151]">
                   {formatNumber(etf.patrimonio)}
                 </td>
-                <td className="px-3 py-2 text-center font-mono text-sm text-gray-400">
+                <td className="px-3 py-2 text-center font-mono text-sm text-[#515151]">
                   {etf.ultima_cota
                     ? new Date(etf.ultima_cota + "T00:00:00").toLocaleDateString("pt-BR")
                     : "-"}
@@ -173,7 +173,7 @@ export default function ETFTable({ etfs, onSelect, selectedTickers, onToggleComp
         </table>
       </div>
 
-      <p className="mt-2 text-xs text-gray-600">{sorted.length} ETFs encontrados</p>
+      <p className="mt-2 text-[10px] text-[#515151] uppercase tracking-wider">{sorted.length} ETFs encontrados</p>
     </div>
   );
 }

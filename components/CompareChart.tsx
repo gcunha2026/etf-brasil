@@ -27,9 +27,10 @@ const PERIODS = [
   { label: "2A", value: "2a" },
 ];
 
+// Fintrender brand colors (primary + secondary palette)
 const COLORS = [
-  "#3b82f6", "#22c55e", "#ef4444", "#f59e0b", "#8b5cf6",
-  "#ec4899", "#06b6d4", "#f97316", "#14b8a6", "#6366f1",
+  "#3d52ef", "#3ef06b", "#fe5b00", "#f0eb3e", "#a649f0",
+  "#1ad0e9", "#6982ff", "#294199", "#ec4899", "#14b8a6",
 ];
 
 const BENCHMARKS = ["IBOV", "S&P 500", "CDI"];
@@ -53,7 +54,6 @@ export default function CompareChart({ tickers, onRemove }: Props) {
       const result = await fetchCompare(tickers, period, benchmark || undefined);
       setSeries(result.series);
 
-      // Merge all series into a unified dataset by date
       const dateMap = new Map<string, Record<string, number | string>>();
 
       for (const [key, points] of Object.entries(result.series)) {
@@ -84,36 +84,36 @@ export default function CompareChart({ tickers, onRemove }: Props) {
 
   if (tickers.length === 0) {
     return (
-      <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg p-8 text-center text-gray-500">
+      <div className="bg-[#1c1c1c] border border-[#2a2a2a] rounded-lg p-8 text-center text-[#515151]">
         Selecione ETFs na tabela para comparar
       </div>
     );
   }
 
   return (
-    <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg p-4">
+    <div className="bg-[#1c1c1c] border border-[#2a2a2a] rounded-lg p-4">
       {/* Controls */}
       <div className="flex flex-wrap items-center gap-3 mb-4">
-        <span className="text-sm text-gray-400">Periodo:</span>
+        <span className="text-[10px] text-[#515151] uppercase tracking-wider">Periodo:</span>
         {PERIODS.map((p) => (
           <button
             key={p.value}
             onClick={() => setPeriod(p.value)}
             className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
               period === p.value
-                ? "bg-blue-600 text-white"
-                : "bg-[#2a2a2a] text-gray-400 hover:text-white"
+                ? "bg-[#3d52ef] text-white"
+                : "bg-[#2a2a2a] text-[#515151] hover:text-[#f3f3f3]"
             }`}
           >
             {p.label}
           </button>
         ))}
 
-        <span className="ml-4 text-sm text-gray-400">Benchmark:</span>
+        <span className="ml-4 text-[10px] text-[#515151] uppercase tracking-wider">Benchmark:</span>
         <select
           value={benchmark}
           onChange={(e) => setBenchmark(e.target.value)}
-          className="bg-[#2a2a2a] border border-[#3a3a3a] rounded px-3 py-1 text-sm text-gray-300 focus:outline-none focus:border-blue-500"
+          className="bg-[#2a2a2a] border border-[#3a3a3a] rounded px-3 py-1 text-sm text-[#c6c6c6] focus:outline-none focus:border-[#3d52ef]"
         >
           <option value="">Nenhum</option>
           {BENCHMARKS.map((b) => (
@@ -127,36 +127,43 @@ export default function CompareChart({ tickers, onRemove }: Props) {
         {tickers.map((t, i) => (
           <span
             key={t}
-            className="inline-flex items-center gap-1 px-2 py-1 rounded text-sm font-mono"
-            style={{ backgroundColor: COLORS[i % COLORS.length] + "20", color: COLORS[i % COLORS.length] }}
+            className="inline-flex items-center gap-1 px-2 py-1 rounded text-sm font-mono border"
+            style={{
+              backgroundColor: COLORS[i % COLORS.length] + "15",
+              color: COLORS[i % COLORS.length],
+              borderColor: COLORS[i % COLORS.length] + "30",
+            }}
           >
             {t}
             <button
               onClick={() => onRemove(t)}
-              className="ml-1 hover:text-white"
+              className="ml-1 hover:opacity-70"
             >
               x
             </button>
           </span>
         ))}
         {benchmark && (
-          <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-sm font-mono bg-gray-700/30 text-gray-400">
+          <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-sm font-mono bg-[#2a2a2a] text-[#515151] border border-[#3a3a3a]">
             {benchmark}
-            <button onClick={() => setBenchmark("")} className="ml-1 hover:text-white">x</button>
+            <button onClick={() => setBenchmark("")} className="ml-1 hover:text-[#f3f3f3]">x</button>
           </span>
         )}
       </div>
 
       {/* Chart */}
       {loading ? (
-        <div className="h-[400px] flex items-center justify-center text-gray-500">Carregando...</div>
+        <div className="h-[400px] flex items-center justify-center text-[#515151]">
+          <div className="inline-block w-5 h-5 border-2 border-[#3d52ef] border-t-transparent rounded-full animate-spin mr-3" />
+          Carregando...
+        </div>
       ) : (
         <ResponsiveContainer width="100%" height={400}>
           <LineChart data={data} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#2a2a2a" />
             <XAxis
               dataKey="data"
-              stroke="#666"
+              stroke="#515151"
               tick={{ fontSize: 11 }}
               tickFormatter={(v) => {
                 const d = new Date(v + "T00:00:00");
@@ -165,13 +172,13 @@ export default function CompareChart({ tickers, onRemove }: Props) {
               interval="preserveStartEnd"
             />
             <YAxis
-              stroke="#666"
+              stroke="#515151"
               tick={{ fontSize: 11 }}
               tickFormatter={(v) => `${v.toFixed(1)}%`}
             />
             <Tooltip
-              contentStyle={{ backgroundColor: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: "8px" }}
-              labelStyle={{ color: "#999" }}
+              contentStyle={{ backgroundColor: "#161616", border: "1px solid #2a2a2a", borderRadius: "8px", fontFamily: "monospace" }}
+              labelStyle={{ color: "#515151" }}
               formatter={(value, name) => [`${Number(value).toFixed(2)}%`, name]}
               labelFormatter={(label) => {
                 const d = new Date(label + "T00:00:00");
@@ -179,13 +186,13 @@ export default function CompareChart({ tickers, onRemove }: Props) {
               }}
             />
             <Legend />
-            <ReferenceLine y={0} stroke="#555" strokeDasharray="3 3" />
+            <ReferenceLine y={0} stroke="#2a2a2a" strokeWidth={1} />
             {allKeys.map((key) => (
               <Line
                 key={key}
                 type="monotone"
                 dataKey={key}
-                stroke={key.startsWith("BM:") ? "#888" : COLORS[tickers.indexOf(key) % COLORS.length]}
+                stroke={key.startsWith("BM:") ? "#515151" : COLORS[tickers.indexOf(key) % COLORS.length]}
                 strokeWidth={key.startsWith("BM:") ? 1.5 : 2}
                 strokeDasharray={key.startsWith("BM:") ? "5 5" : undefined}
                 dot={false}
@@ -197,7 +204,7 @@ export default function CompareChart({ tickers, onRemove }: Props) {
         </ResponsiveContainer>
       )}
 
-      <p className="mt-2 text-xs text-gray-600 text-center">
+      <p className="mt-2 text-[10px] text-[#515151] text-center uppercase tracking-wider">
         Retorno normalizado (%) a partir do inicio do periodo
       </p>
     </div>

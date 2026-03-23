@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const plexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "700"],
+});
 
 export const metadata: Metadata = {
-  title: "ETF Brasil - Consolidador de ETFs",
-  description: "Compare e analise todos os ETFs listados na B3",
+  title: "ETF Brasil | Fintrender",
+  description: "Compare e analise todos os ETFs listados na B3 - Fintrender",
 };
 
 export default function RootLayout({
@@ -16,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body className={`${inter.className} antialiased`}>{children}</body>
+      <body className={`${plexMono.className} antialiased`}>{children}</body>
     </html>
   );
 }
