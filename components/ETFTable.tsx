@@ -30,7 +30,7 @@ function formatNumber(n: number | null, decimals = 2): string {
   return `R$ ${n.toFixed(decimals)}`;
 }
 
-type SortKey = "ticker" | "admin" | "taxa_adm" | "preco" | "patrimonio" | "ret_1m" | "ret_3m" | "ret_6m" | "ret_1a" | "ret_2a";
+type SortKey = "ticker" | "admin" | "taxa_adm" | "preco" | "patrimonio" | "ultima_cota" | "ret_1m" | "ret_3m" | "ret_6m" | "ret_1a" | "ret_2a";
 
 export default function ETFTable({ etfs, onSelect, selectedTickers, onToggleCompare }: Props) {
   const [sortKey, setSortKey] = useState<SortKey>("ticker");
@@ -119,6 +119,7 @@ export default function ETFTable({ etfs, onSelect, selectedTickers, onToggleComp
               <SortHeader label="Preço" field="preco" />
               <SortHeader label="Taxa Adm" field="taxa_adm" />
               <SortHeader label="Patrimônio" field="patrimonio" />
+              <SortHeader label="Últ. Cota" field="ultima_cota" />
               <SortHeader label="1M" field="ret_1m" />
               <SortHeader label="3M" field="ret_3m" />
               <SortHeader label="6M" field="ret_6m" />
@@ -157,6 +158,11 @@ export default function ETFTable({ etfs, onSelect, selectedTickers, onToggleComp
                 </td>
                 <td className="px-3 py-2 text-right text-sm text-gray-400">
                   {formatNumber(etf.patrimonio)}
+                </td>
+                <td className="px-3 py-2 text-center font-mono text-sm text-gray-400">
+                  {etf.ultima_cota
+                    ? new Date(etf.ultima_cota + "T00:00:00").toLocaleDateString("pt-BR")
+                    : "-"}
                 </td>
                 {PERIODS.map((p) => (
                   <ReturnCell key={p} value={etf.retornos[p]} />

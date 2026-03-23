@@ -10,6 +10,7 @@ export interface ETF {
   preco: number | null;
   volume: number | null;
   patrimonio: number | null;
+  ultima_cota: string | null;
   retornos: Record<string, number | null>;
 }
 

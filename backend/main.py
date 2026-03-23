@@ -62,7 +62,7 @@ RETURN_PERIODS = {
 @app.get("/api/etfs")
 def list_etfs(
     search: Optional[str] = None,
-    sort_by: str = Query("ticker", regex="^(ticker|nome|taxa_adm|patrimonio|ret_1m|ret_3m|ret_6m|ret_1a|ret_2a)$"),
+    sort_by: str = Query("ticker", regex="^(ticker|nome|taxa_adm|patrimonio|ultima_cota|ret_1m|ret_3m|ret_6m|ret_1a|ret_2a)$"),
     sort_dir: str = Query("asc", regex="^(asc|desc)$"),
 ):
     """List all ETFs with basic info and returns."""
@@ -92,6 +92,7 @@ def list_etfs(
         returns = calc_returns(price_list, RETURN_PERIODS)
 
         latest_price = price_list[-1]["fechamento"] if price_list else None
+        ultima_cota = price_list[-1]["data"] if price_list else None
         volume_row = conn.execute("""
             SELECT volume FROM etf_precos WHERE ticker = ? ORDER BY data DESC LIMIT 1
         """, (ticker,)).fetchone()
@@ -106,6 +107,7 @@ def list_etfs(
             "preco": latest_price,
             "volume": volume_row["volume"] if volume_row else None,
             "patrimonio": etf["patrimonio"],
+            "ultima_cota": ultima_cota,
             "retornos": returns,
         })
 

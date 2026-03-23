@@ -33,6 +33,7 @@ export async function GET(request: Request) {
       preco: latest?.c ?? null,
       volume: latest?.v ?? null,
       patrimonio: etf.patrimonio,
+      ultima_cota: latest?.d ?? null,
       retornos: returns,
     });
   }
